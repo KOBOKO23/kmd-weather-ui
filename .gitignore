@@ -1,0 +1,46 @@
+# Node dependencies
+/node_modules/
+
+# Build output
+/dist/
+out/
+
+# Local env files
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Testing
+/coverage/
+
+# Optional Vite cache
+/.vite/
+
+# Optional JetBrains IDE files
+*.iml
+
+# Temporary files
+*.tmp
+*.temp
