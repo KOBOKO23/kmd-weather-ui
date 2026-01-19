@@ -63,7 +63,7 @@ export function WeatherMap({
         setError(''); // Clear previous errors
         
         // Use the production-ready API with timeout
-        const data = await fetchGRIBData(domain, parameter, timeStep);
+        const data = await fetchGRIBData(domain || 'kenya', parameter, timeStep);
         
         console.log('✓ WRF data received:', data.metadata?.total_points || data.points?.length, 'points');
         
@@ -116,7 +116,7 @@ export function WeatherMap({
         if (dataCache.has(nextCacheKey)) continue;
         
         try {
-          const data = await fetchGRIBData(domain, parameter, step);
+          const data = await fetchGRIBData(domain || 'kenya', parameter, step);
           
           if (data.points && Array.isArray(data.points)) {
             setDataCache(prev => {
@@ -382,52 +382,149 @@ export function WeatherMap({
   }, [domain, parameter, timeStep, wrfData]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-full min-h-[400px]">
-      <canvas ref={canvasRef} className="w-full h-full" />
-      
-      {/* Domain Label */}
-      <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg z-[1000]">
-        <div className="text-xs text-slate-500">Domain</div>
-        <div className="text-sm font-medium">{domain === 'kenya' ? 'Kenya (3km)' : 'East Africa (9km)'}</div>
-      </div>
-      
-      {/* Parameter Label */}
-      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg text-xs text-slate-600 z-[1000]">
-        <div className="font-medium">WRF Model Forecast</div>
-        <div className="text-slate-500">{getParameterLabel(parameter)}</div>
+    // CHANGE: Improved aspect ratio - better vertical space for both domains
+    <div className="w-full bg-gradient-to-br from-slate-50 to-slate-100 py-8 px-4">
+      {/* CHANGE: Both domains now taller with better proportions */}
+      <div 
+        ref={containerRef} 
+        className={`relative mx-auto rounded-xl overflow-hidden shadow-2xl border border-slate-200 ${
+          domain === 'kenya' 
+            ? 'max-w-3xl h-[650px]'  // Taller for Kenya's vertical orientation
+            : 'max-w-4xl h-[620px]'  // Slightly taller and narrower for East Africa (cautious adjustment)
+        }`}
+      >
+        <canvas ref={canvasRef} className="w-full h-full" />
+        
+        {/* CHANGE: Reduced padding and font sizes for all overlays */}
+        {/* Domain Label */}
+        <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-md shadow-md z-[1000]">
+          <div className="text-[9px] text-slate-500">Domain</div>
+          <div className="text-[11px] font-medium">{domain === 'kenya' ? 'Kenya (3km)' : 'East Africa (9km)'}</div>
+        </div>
+        
+        {/* Parameter Label */}
+        <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-md shadow-md text-[9px] text-slate-600 z-[1000]">
+          <div className="font-medium">WRF Model Forecast</div>
+          <div className="text-slate-500">{getParameterLabel(parameter)}</div>
+        </div>
+
+        {/* Status/Error Display */}
+        {(loadStatus || error) && (
+          <div className="absolute bottom-2 left-2 right-2 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-md shadow-md z-[1000] max-w-md">
+            {error && (
+              <div className="text-[9px] text-red-600 mb-0.5 font-medium">⚠️ {error}</div>
+            )}
+            {loadStatus && !error && (
+              <div className="text-[9px] text-slate-600">{loadStatus}</div>
+            )}
+          </div>
+        )}
+        
+        {/* Loading Indicator */}
+        {isLoadingData && (
+          <div className="absolute top-14 right-2 bg-blue-600/90 backdrop-blur-sm px-2.5 py-1 rounded-md shadow-md z-[1000]">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2.5 h-2.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              <span className="text-[9px] text-white font-medium">Loading data...</span>
+            </div>
+          </div>
+        )}
+        
+        {/* No Data Warning */}
+        {!isLoadingData && wrfData.length === 0 && !error && (
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-yellow-50 border border-yellow-200 px-4 py-2.5 rounded-md shadow-md z-[1000]">
+            <div className="text-xs text-yellow-800 font-medium mb-0.5">No forecast data available</div>
+            <div className="text-[10px] text-yellow-600">
+              Data may not have been fetched yet for this timestep.
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Status/Error Display */}
-      {(loadStatus || error) && (
-        <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg z-[1000] max-w-md">
-          {error && (
-            <div className="text-xs text-red-600 mb-1 font-medium">⚠️ {error}</div>
-          )}
-          {loadStatus && !error && (
-            <div className="text-xs text-slate-600">{loadStatus}</div>
-          )}
-        </div>
-      )}
-      
-      {/* Loading Indicator */}
-      {isLoadingData && (
-        <div className="absolute top-20 right-4 bg-blue-600/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg z-[1000]">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-            <span className="text-xs text-white font-medium">Loading forecast data...</span>
+      {/* CHANGE: Info cards match map width for each domain */}
+      <div className={`mx-auto mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 ${
+        domain === 'kenya' ? 'max-w-3xl' : 'max-w-4xl'
+      }`}>
+        {/* Model Info Card */}
+        <div className="bg-white rounded-lg shadow-md p-4 border border-slate-200 hover:shadow-lg transition-shadow">
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h3 className="text-sm font-semibold text-slate-800">Model Details</h3>
+          </div>
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-500">Version:</span>
+              <span className="font-medium text-slate-700">WRF-ARW v4.5</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-500">Resolution:</span>
+              <span className="font-medium text-slate-700">{domain === 'kenya' ? '3km' : '9km'}</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-500">Physics:</span>
+              <span className="font-medium text-slate-700">Thompson</span>
+            </div>
           </div>
         </div>
-      )}
-      
-      {/* No Data Warning */}
-      {!isLoadingData && wrfData.length === 0 && !error && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-yellow-50 border border-yellow-200 px-6 py-4 rounded-lg shadow-lg z-[1000]">
-          <div className="text-sm text-yellow-800 font-medium mb-1">No forecast data available</div>
-          <div className="text-xs text-yellow-600">
-            Data may not have been fetched yet for this timestep.
+
+        {/* Timestep Info Card */}
+        <div className="bg-white rounded-lg shadow-md p-4 border border-slate-200 hover:shadow-lg transition-shadow">
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+              <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-sm font-semibold text-slate-800">Forecast Time</h3>
+          </div>
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-500">Timestep:</span>
+              <span className="font-medium text-slate-700">{timeStep} / 24</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-500">Hours ahead:</span>
+              <span className="font-medium text-slate-700">{timeStep * 3}h</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-500">Interval:</span>
+              <span className="font-medium text-slate-700">3-hourly</span>
+            </div>
           </div>
         </div>
-      )}
+
+        {/* Data Info Card */}
+        <div className="bg-white rounded-lg shadow-md p-4 border border-slate-200 hover:shadow-lg transition-shadow">
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+              <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 className="text-sm font-semibold text-slate-800">Data Status</h3>
+          </div>
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-500">Points loaded:</span>
+              <span className="font-medium text-slate-700">{wrfData.length.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-500">Cache size:</span>
+              <span className="font-medium text-slate-700">{dataCache.size} timesteps</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-500">Status:</span>
+              <span className={`font-medium ${isLoadingData ? 'text-blue-600' : wrfData.length > 0 ? 'text-green-600' : 'text-slate-700'}`}>
+                {isLoadingData ? 'Loading...' : wrfData.length > 0 ? 'Ready' : 'No data'}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -524,40 +621,42 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
 }
 
 function getDataColor(normalized: number, parameter: string): string {
+  // KMD Official Color Standard - exact RGB values from documentation
   if (parameter === 'rainfall') {
-    const r = Math.floor(240 - normalized * 220);
-    const g = Math.floor(248 - normalized * 150);
-    const b = 255;
-    return `rgb(${r}, ${g}, ${b})`;
-  } else if (parameter === 'temp-max' || parameter === 'temp-min') {
-    if (normalized < 0.5) {
-      const t = normalized * 2;
-      const r = Math.floor(100 + t * 155);
-      const g = Math.floor(100 + t * 155);
-      const b = Math.floor(255 - t * 155);
-      return `rgb(${r}, ${g}, ${b})`;
-    } else {
-      const t = (normalized - 0.5) * 2;
-      const r = 255;
-      const g = Math.floor(255 - t * 155);
-      const b = Math.floor(100 - t * 100);
-      return `rgb(${r}, ${g}, ${b})`;
-    }
+    // Rainfall color ranges based on KMD standard
+    if (normalized < 0.125) return 'rgb(255, 255, 255)';      // < 1mm - WHITE
+    if (normalized < 0.25) return 'rgb(211, 255, 190)';       // 2-10mm
+    if (normalized < 0.375) return 'rgb(85, 255, 0)';         // 11-20mm
+    if (normalized < 0.5) return 'rgb(115, 223, 255)';        // 21-50mm
+    if (normalized < 0.625) return 'rgb(0, 170, 223)';        // 51-70mm
+    if (normalized < 0.75) return 'rgb(255, 170, 0)';         // 71-100mm
+    if (normalized < 0.875) return 'rgb(255, 0, 0)';          // 101-120mm
+    return 'rgb(255, 0, 230)';                                 // >121mm - Magenta
+  } else if (parameter === 'temp-max') {
+    // Max temperature based on KMD standard
+    if (normalized < 0.167) return 'rgb(0, 230, 0)';          // 0-15°C
+    if (normalized < 0.333) return 'rgb(152, 230, 0)';        // 16-20°C
+    if (normalized < 0.5) return 'rgb(230, 230, 0)';          // 21-25°C
+    if (normalized < 0.667) return 'rgb(255, 170, 0)';        // 26-30°C
+    if (normalized < 0.833) return 'rgb(255, 90, 0)';         // 31-35°C
+    return 'rgb(192, 0, 0)';                                   // >36°C
+  } else if (parameter === 'temp-min') {
+    // Min temperature based on KMD standard
+    if (normalized < 0.167) return 'rgb(0, 0, 107)';          // <5°C
+    if (normalized < 0.333) return 'rgb(0, 48, 255)';         // 6-10°C
+    if (normalized < 0.5) return 'rgb(0, 168, 168)';          // 11-15°C
+    if (normalized < 0.667) return 'rgb(112, 168, 0)';        // 16-20°C
+    if (normalized < 0.833) return 'rgb(152, 230, 0)';        // 21-25°C
+    return 'rgb(230, 230, 0)';                                 // >26°C
   } else if (parameter === 'rh') {
-    if (normalized < 0.5) {
-      const t = normalized * 2;
-      const r = Math.floor(165 - t * 100);
-      const g = Math.floor(100 + t * 155);
-      const b = Math.floor(50 + t * 50);
-      return `rgb(${r}, ${g}, ${b})`;
-    } else {
-      const t = (normalized - 0.5) * 2;
-      const r = Math.floor(65 - t * 50);
-      const g = Math.floor(255 - t * 100);
-      const b = Math.floor(100 + t * 155);
-      return `rgb(${r}, ${g}, ${b})`;
-    }
+    // Relative humidity gradient
+    if (normalized < 0.2) return 'rgb(139, 69, 19)';          // 0-20%
+    if (normalized < 0.4) return 'rgb(210, 105, 30)';         // 21-40%
+    if (normalized < 0.6) return 'rgb(240, 230, 140)';        // 41-60%
+    if (normalized < 0.8) return 'rgb(144, 238, 144)';        // 61-80%
+    return 'rgb(0, 206, 209)';                                 // 81-100%
   } else {
+    // CAPE or other parameters
     const r = Math.floor(128 + normalized * 127);
     const g = Math.floor(0 + normalized * 100);
     const b = Math.floor(128 - normalized * 128);
@@ -659,6 +758,7 @@ function drawGeoJSON(
   });
 }
 
+// CHANGE: Reduced coordinate label font size from 9px to 8px
 function drawCoordinateLabels(
   ctx: CanvasRenderingContext2D,
   width: number,
@@ -668,19 +768,19 @@ function drawCoordinateLabels(
   latToY: (lat: number) => number
 ) {
   ctx.fillStyle = '#475569';
-  ctx.font = '10px system-ui';
+  ctx.font = '8px system-ui';
 
   for (let lon = Math.ceil(bounds.minLon); lon <= bounds.maxLon; lon += 4) {
     const x = lonToX(lon);
     ctx.textAlign = 'center';
-    ctx.fillText(`${lon}°E`, x, height - 5);
+    ctx.fillText(`${lon}°E`, x, height - 4);
   }
 
   for (let lat = Math.ceil(bounds.minLat); lat <= bounds.maxLat; lat += 4) {
     const y = latToY(lat);
     ctx.textAlign = 'right';
     const label = lat >= 0 ? `${lat}°N` : `${Math.abs(lat)}°S`;
-    ctx.fillText(label, width - 5, y + 3);
+    ctx.fillText(label, width - 4, y + 3);
   }
 }
 
