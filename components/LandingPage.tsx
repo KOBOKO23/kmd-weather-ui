@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom';
-import { Droplets, Wind, Thermometer, MapPin, Calendar, Database, Satellite, Zap, CloudRain, Activity } from 'lucide-react';
+import { MapPin, Calendar, Database, Satellite, Zap, CloudRain, Activity, Wind, TrendingUp } from 'lucide-react';
 
-export function LandingPage() {
+export default function LandingPage() {
   const currentDate = new Date().toLocaleDateString('en-GB', { 
     day: '2-digit', 
     month: 'short', 
@@ -19,8 +18,8 @@ export function LandingPage() {
                 <CloudRain className="w-6 h-6 text-slate-900" />
               </div>
               <div>
-                <h1 className="text-slate-900 text-lg font-bold">KENYA METEOROLOGICAL DEPARTMENT</h1>
-                <p className="text-slate-700 text-xs uppercase tracking-wide">Numerical Weather Prediction & Data Assimilation Section</p>
+                <h1 className="text-slate-900 text-lg font-bold">NUMERICAL WEATHER PREDICTION CENTER NAIROBI</h1>
+                <p className="text-slate-700 text-xs uppercase tracking-wide">Kenya Meteorological Department</p>
               </div>
             </div>
             <div className="text-right">
@@ -33,212 +32,164 @@ export function LandingPage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
-        {/* Model Run Info */}
-        <section className="mb-8">
-          <table className="w-full border-2 border-slate-900">
-            <thead>
-              <tr className="bg-slate-100 border-b-2 border-slate-900">
-                <th className="px-4 py-2 text-left text-xs font-bold text-slate-900 uppercase border-r border-slate-900">Latest Model Run</th>
-                <th className="px-4 py-2 text-left text-xs font-bold text-slate-900 uppercase border-r border-slate-900">Model Version</th>
-                <th className="px-4 py-2 text-left text-xs font-bold text-slate-900 uppercase border-r border-slate-900">Forecast Lead Time</th>
-                <th className="px-4 py-2 text-left text-xs font-bold text-slate-900 uppercase">Temporal Resolution</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-slate-900">
-                <td className="px-4 py-3 text-sm font-mono border-r border-slate-900">{currentDate} 09:00 EAT</td>
-                <td className="px-4 py-3 text-sm border-r border-slate-900">WRF-ARW v4.5.1</td>
-                <td className="px-4 py-3 text-sm border-r border-slate-900">72 hours</td>
-                <td className="px-4 py-3 text-sm">3-hourly</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        {/* Domain Configuration & Parameters */}
-        <section className="mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Domain Configuration */}
-            <div className="border-2 border-slate-900">
-              <div className="bg-slate-100 border-b-2 border-slate-900 px-4 py-2">
-                <h3 className="text-sm font-bold text-slate-900 uppercase">Domain Configuration</h3>
-              </div>
-              <table className="w-full text-sm">
-                <tbody>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2 border-r border-slate-900">Kenya Domain</td>
-                    <td className="px-4 py-2 font-mono">4.5 km</td>
-                  </tr>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2 border-r border-slate-900">East Africa Domain</td>
-                    <td className="px-4 py-2 font-mono">12 km</td>
-                  </tr>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2 border-r border-slate-900">Grid Points (Kenya)</td>
-                    <td className="px-4 py-2 font-mono">450 × 520</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2 border-r border-slate-900">Vertical Levels</td>
-                    <td className="px-4 py-2 font-mono">38 levels</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            {/* Available Parameters */}
-            <div className="border-2 border-slate-900">
-              <div className="bg-slate-100 border-b-2 border-slate-900 px-4 py-2">
-                <h3 className="text-sm font-bold text-slate-900 uppercase">Available Parameters</h3>
-              </div>
-              <table className="w-full text-sm">
-                <tbody>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2">Accumulated Precipitation (mm)</td>
-                  </tr>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2">Temperature Min/Max (°C)</td>
-                  </tr>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2">Relative Humidity (%)</td>
-                  </tr>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2">CAPE (J/kg)</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2">Wind Speed & Direction</td>
-                  </tr>
-                </tbody>
-              </table>
+        {/* Hero Section */}
+        <section className="mb-12">
+          <div className="border-2 border-slate-900 p-8 bg-slate-50">
+            <h2 className="text-2xl font-bold text-slate-900 mb-3">
+              Advancing Weather Forecasting Through Science and Technology
+            </h2>
+            <p className="text-slate-700 mb-4 max-w-3xl">
+              The Numerical Weather Prediction Center Nairobi provides accurate, timely weather forecasts 
+              and climate information to support decision-making across Kenya and East Africa. 
+              Our numerical weather prediction systems deliver essential meteorological data 
+              for public safety, agriculture, aviation, and disaster preparedness.
+            </p>
+            <div className="text-sm text-slate-600">
+              Latest Update: <span className="font-mono font-medium">{currentDate} 09:00 EAT</span>
             </div>
           </div>
         </section>
 
-        {/* Forecast Products Navigation */}
-        <section className="mb-8">
-          <h2 className="text-base font-bold text-slate-900 uppercase mb-4 pb-2 border-b-2 border-slate-900">Forecast Products & Services</h2>
+        {/* Forecast Products - Card Grid */}
+        <section className="mb-12">
+          <h2 className="text-lg font-bold text-slate-900 uppercase mb-6">Forecast Products</h2>
           
-          <table className="w-full border-2 border-slate-900 text-sm">
-            <thead>
-              <tr className="bg-slate-100 border-b-2 border-slate-900">
-                <th className="px-4 py-2 text-left text-xs font-bold uppercase border-r border-slate-900 w-1/4">Product</th>
-                <th className="px-4 py-2 text-left text-xs font-bold uppercase border-r border-slate-900">Description</th>
-                <th className="px-4 py-2 text-left text-xs font-bold uppercase border-r border-slate-900 w-24">Status</th>
-                <th className="px-4 py-2 text-left text-xs font-bold uppercase w-32">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-slate-900">
-                <td className="px-4 py-3 font-medium border-r border-slate-900">WRF Model Viewer</td>
-                <td className="px-4 py-3 border-r border-slate-900">Real-time visualization of WRF model output for Kenya and East Africa domains</td>
-                <td className="px-4 py-3 border-r border-slate-900 font-medium">ACTIVE</td>
-                <td className="px-4 py-3">
-                  <Link 
-                    to="/nwp-system"
-                    className="border-2 border-slate-900 px-3 py-1 text-xs font-bold uppercase hover:bg-slate-900 hover:text-white transition-colors inline-block"
-                  >
-                    ACCESS
-                  </Link>
-                </td>
-              </tr>
-              <tr className="border-b border-slate-900">
-                <td className="px-4 py-3 font-medium border-r border-slate-900">County Forecasts</td>
-                <td className="px-4 py-3 border-r border-slate-900">Localized forecasts for all 47 counties with detailed meteorological parameters</td>
-                <td className="px-4 py-3 border-r border-slate-900 text-slate-500">PLANNED</td>
-                <td className="px-4 py-3 text-slate-500 text-xs">Under Development</td>
-              </tr>
-              <tr className="border-b border-slate-900">
-                <td className="px-4 py-3 font-medium border-r border-slate-900">Daily Forecast</td>
-                <td className="px-4 py-3 border-r border-slate-900">24-hour detailed forecasts with hourly breakdowns for major cities</td>
-                <td className="px-4 py-3 border-r border-slate-900 text-slate-500">PLANNED</td>
-                <td className="px-4 py-3 text-slate-500 text-xs">Under Development</td>
-              </tr>
-              <tr className="border-b border-slate-900">
-                <td className="px-4 py-3 font-medium border-r border-slate-900">5-Day Forecast</td>
-                <td className="px-4 py-3 border-r border-slate-900">Medium-range forecasts with precipitation probability and temperature trends</td>
-                <td className="px-4 py-3 border-r border-slate-900 text-slate-500">PLANNED</td>
-                <td className="px-4 py-3 text-slate-500 text-xs">Under Development</td>
-              </tr>
-              <tr className="border-b border-slate-900">
-                <td className="px-4 py-3 font-medium border-r border-slate-900">7-Day Forecast</td>
-                <td className="px-4 py-3 border-r border-slate-900">Week-ahead outlook for agricultural planning and operational decision-making</td>
-                <td className="px-4 py-3 border-r border-slate-900 text-slate-500">PLANNED</td>
-                <td className="px-4 py-3 text-slate-500 text-xs">Under Development</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-medium border-r border-slate-900">Seasonal Forecast</td>
-                <td className="px-4 py-3 border-r border-slate-900">Sub-seasonal to seasonal outlooks for climate-sensitive sectors</td>
-                <td className="px-4 py-3 border-r border-slate-900 text-slate-500">PLANNED</td>
-                <td className="px-4 py-3 text-slate-500 text-xs">Under Development</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        {/* System Configuration */}
-        <section className="mb-8">
-          <h2 className="text-base font-bold text-slate-900 uppercase mb-4 pb-2 border-b-2 border-slate-900">System Configuration</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Model Configuration */}
-            <div className="border-2 border-slate-900">
-              <div className="bg-slate-100 border-b-2 border-slate-900 px-4 py-2">
-                <h3 className="text-sm font-bold text-slate-900 uppercase">Model Physics</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Weather Maps */}
+            <a href="/nwp-system" className="border-2 border-slate-900 hover:bg-slate-50 transition-colors group block">
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <MapPin className="w-8 h-8 text-slate-900" />
+                  <span className="text-xs font-bold text-slate-900 uppercase border border-slate-900 px-2 py-1">Active</span>
+                </div>
+                <h3 className="text-base font-bold text-slate-900 mb-2">Weather Maps</h3>
+                <p className="text-sm text-slate-700 mb-3">
+                  Interactive weather maps showing temperature, precipitation, wind, and other parameters across Kenya and East Africa.
+                </p>
+                <div className="text-xs font-bold text-slate-900 uppercase group-hover:underline">
+                  View Maps →
+                </div>
               </div>
-              <table className="w-full text-sm">
-                <tbody>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2 border-r border-slate-900">Model Core</td>
-                    <td className="px-4 py-2">ARW Dynamics</td>
-                  </tr>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2 border-r border-slate-900">Microphysics</td>
-                    <td className="px-4 py-2">Thompson Scheme</td>
-                  </tr>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2 border-r border-slate-900">Radiation</td>
-                    <td className="px-4 py-2">RRTMG</td>
-                  </tr>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2 border-r border-slate-900">PBL Scheme</td>
-                    <td className="px-4 py-2">YSU</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2 border-r border-slate-900">Cumulus</td>
-                    <td className="px-4 py-2">Kain-Fritsch</td>
-                  </tr>
-                </tbody>
-              </table>
+            </a>
+
+            {/* County Forecasts */}
+            <div className="border-2 border-slate-300 bg-slate-50">
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <Database className="w-8 h-8 text-slate-400" />
+                  <span className="text-xs font-bold text-slate-500 uppercase border border-slate-300 px-2 py-1">Coming Soon</span>
+                </div>
+                <h3 className="text-base font-bold text-slate-500 mb-2">County Forecasts</h3>
+                <p className="text-sm text-slate-600 mb-3">
+                  Detailed forecasts for all 47 counties with localized weather information and advisories.
+                </p>
+                <div className="text-xs font-bold text-slate-400 uppercase">
+                  Under Development
+                </div>
+              </div>
             </div>
 
-            {/* Data Sources */}
-            <div className="border-2 border-slate-900">
-              <div className="bg-slate-100 border-b-2 border-slate-900 px-4 py-2">
-                <h3 className="text-sm font-bold text-slate-900 uppercase">Data Sources</h3>
+            {/* Daily Forecast */}
+            <div className="border-2 border-slate-300 bg-slate-50">
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <Calendar className="w-8 h-8 text-slate-400" />
+                  <span className="text-xs font-bold text-slate-500 uppercase border border-slate-300 px-2 py-1">Coming Soon</span>
+                </div>
+                <h3 className="text-base font-bold text-slate-500 mb-2">Daily Forecast</h3>
+                <p className="text-sm text-slate-600 mb-3">
+                  24-hour detailed forecasts with hourly breakdowns for major cities and regions.
+                </p>
+                <div className="text-xs font-bold text-slate-400 uppercase">
+                  Under Development
+                </div>
               </div>
-              <table className="w-full text-sm">
-                <tbody>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2 border-r border-slate-900">Initial Conditions</td>
-                    <td className="px-4 py-2">GFS 0.25°</td>
-                  </tr>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2 border-r border-slate-900">Boundary Data</td>
-                    <td className="px-4 py-2">GFS 6-hourly</td>
-                  </tr>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2 border-r border-slate-900">SST</td>
-                    <td className="px-4 py-2">NOAA RTG</td>
-                  </tr>
-                  <tr className="border-b border-slate-900">
-                    <td className="px-4 py-2 border-r border-slate-900">Topography</td>
-                    <td className="px-4 py-2">USGS GMTED2010</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2 border-r border-slate-900">Land Use</td>
-                    <td className="px-4 py-2">MODIS 20-category</td>
-                  </tr>
-                </tbody>
-              </table>
+            </div>
+
+            {/* 5-Day Forecast */}
+            <div className="border-2 border-slate-300 bg-slate-50">
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <Activity className="w-8 h-8 text-slate-400" />
+                  <span className="text-xs font-bold text-slate-500 uppercase border border-slate-300 px-2 py-1">Coming Soon</span>
+                </div>
+                <h3 className="text-base font-bold text-slate-500 mb-2">5-Day Forecast</h3>
+                <p className="text-sm text-slate-600 mb-3">
+                  Medium-range forecasts with precipitation probability and temperature trends.
+                </p>
+                <div className="text-xs font-bold text-slate-400 uppercase">
+                  Under Development
+                </div>
+              </div>
+            </div>
+
+            {/* 7-Day Forecast */}
+            <div className="border-2 border-slate-300 bg-slate-50">
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <Wind className="w-8 h-8 text-slate-400" />
+                  <span className="text-xs font-bold text-slate-500 uppercase border border-slate-300 px-2 py-1">Coming Soon</span>
+                </div>
+                <h3 className="text-base font-bold text-slate-500 mb-2">7-Day Forecast</h3>
+                <p className="text-sm text-slate-600 mb-3">
+                  Week-ahead outlook for agricultural planning and operational decision-making.
+                </p>
+                <div className="text-xs font-bold text-slate-400 uppercase">
+                  Under Development
+                </div>
+              </div>
+            </div>
+
+            {/* Seasonal Outlook */}
+            <div className="border-2 border-slate-300 bg-slate-50">
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <TrendingUp className="w-8 h-8 text-slate-400" />
+                  <span className="text-xs font-bold text-slate-500 uppercase border border-slate-300 px-2 py-1">Coming Soon</span>
+                </div>
+                <h3 className="text-base font-bold text-slate-500 mb-2">Seasonal Outlook</h3>
+                <p className="text-sm text-slate-600 mb-3">
+                  Sub-seasonal to seasonal forecasts for climate-sensitive sectors and long-term planning.
+                </p>
+                <div className="text-xs font-bold text-slate-400 uppercase">
+                  Under Development
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Services Section */}
+        <section className="mb-12">
+          <h2 className="text-lg font-bold text-slate-900 uppercase mb-6">Services & Data</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Data Access */}
+            <div className="border-2 border-slate-300 bg-slate-50">
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <Database className="w-8 h-8 text-slate-400" />
+                  <span className="text-xs font-bold text-slate-500 uppercase border border-slate-300 px-2 py-1">Coming Soon</span>
+                </div>
+                <h3 className="text-base font-bold text-slate-500 mb-2">Data Access</h3>
+                <p className="text-sm text-slate-600">
+                  Access historical weather data, climate records, and forecast archives for research and analysis.
+                </p>
+              </div>
+            </div>
+
+            {/* API Services */}
+            <div className="border-2 border-slate-300 bg-slate-50">
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <Zap className="w-8 h-8 text-slate-400" />
+                  <span className="text-xs font-bold text-slate-500 uppercase border border-slate-300 px-2 py-1">Coming Soon</span>
+                </div>
+                <h3 className="text-base font-bold text-slate-500 mb-2">API Services</h3>
+                <p className="text-sm text-slate-600">
+                  Programmatic access to weather data and forecasts for developers and organizations.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -246,36 +197,50 @@ export function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t-2 border-slate-900 bg-slate-50 mt-12">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm mb-6">
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-6">
             <div>
-              <h6 className="font-bold text-slate-900 mb-2 uppercase text-xs">About NWP Section</h6>
-              <p className="text-slate-700 text-xs leading-relaxed">
-                The Numerical Weather Prediction & Data Assimilation Section operates 
-                Kenya's operational weather forecasting models providing critical 
-                meteorological information for the nation and region.
-              </p>
-            </div>
-            <div>
-              <h6 className="font-bold text-slate-900 mb-2 uppercase text-xs">Quick Links</h6>
-              <ul className="space-y-1 text-xs">
-                <li><Link to="/nwp-system" className="text-slate-700 hover:underline">WRF Model Viewer</Link></li>
-                <li><Link to="/counties" className="text-slate-700 hover:underline">County Forecasts</Link></li>
-                <li><Link to="/forecasts" className="text-slate-700 hover:underline">Forecast Products</Link></li>
+              <h6 className="font-bold text-slate-900 mb-3 uppercase text-xs">About</h6>
+              <ul className="space-y-2 text-sm text-slate-700">
+                <li><a href="#" className="hover:underline">Who We Are</a></li>
+                <li><a href="#" className="hover:underline">What We Do</a></li>
+                <li><a href="#" className="hover:underline">Contact Us</a></li>
               </ul>
             </div>
             <div>
-              <h6 className="font-bold text-slate-900 mb-2 uppercase text-xs">Contact Information</h6>
-              <p className="text-slate-700 text-xs leading-relaxed">
-                Kenya Meteorological Department<br />
-                Dagoretti Corner, Ngong Road<br />
-                P.O. Box 30259-00100<br />
-                Nairobi, Kenya
-              </p>
+              <h6 className="font-bold text-slate-900 mb-3 uppercase text-xs">Forecasts</h6>
+              <ul className="space-y-2 text-sm text-slate-700">
+                <li><a href="/nwp-system" className="hover:underline">Weather Maps</a></li>
+                <li><a href="#" className="hover:underline text-slate-500">County Forecasts</a></li>
+                <li><a href="#" className="hover:underline text-slate-500">Daily Forecast</a></li>
+              </ul>
+            </div>
+            <div>
+              <h6 className="font-bold text-slate-900 mb-3 uppercase text-xs">Data & Services</h6>
+              <ul className="space-y-2 text-sm text-slate-700">
+                <li><a href="#" className="hover:underline text-slate-500">Climate Data</a></li>
+                <li><a href="#" className="hover:underline text-slate-500">Historical Records</a></li>
+                <li><a href="#" className="hover:underline text-slate-500">API Access</a></li>
+              </ul>
+            </div>
+            <div>
+              <h6 className="font-bold text-slate-900 mb-3 uppercase text-xs">Resources</h6>
+              <ul className="space-y-2 text-sm text-slate-700">
+                <li><a href="#" className="hover:underline text-slate-500">Publications</a></li>
+                <li><a href="#" className="hover:underline text-slate-500">Documentation</a></li>
+                <li><a href="#" className="hover:underline text-slate-500">Training</a></li>
+              </ul>
             </div>
           </div>
-          <div className="pt-4 border-t border-slate-900 text-center text-slate-600 text-xs uppercase">
-            Kenya Meteorological Department - Numerical Weather Prediction Section
+          <div className="pt-6 border-t border-slate-300">
+            <p className="text-xs text-slate-600 mb-2">
+              Kenya Meteorological Department, Dagoretti Corner, Ngong Road
+              <br />
+              P.O. Box 30259-00100, Nairobi, Kenya
+            </p>
+            <div className="text-xs text-slate-500 uppercase">
+              © {new Date().getFullYear()} Numerical Weather Prediction Center Nairobi. All rights reserved.
+            </div>
           </div>
         </div>
       </footer>
