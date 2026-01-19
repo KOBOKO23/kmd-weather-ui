@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { LandingPage } from './components/LandingPage';
+import LandingPage from './components/LandingPage';
 import { NWPSystemPage } from './pages/NWPSystemPage';
 import { ForecastsPage } from './pages/ForecastsPage';
 import { CountyForecastPage } from './pages/CountyForecastPage';
