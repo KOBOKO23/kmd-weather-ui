@@ -16,7 +16,7 @@ interface LegendConfig {
 
 /**
  * OFFICIAL KMD COLOR STANDARD
- * Based on operational contours table
+ * Based on operational contours table from KMD documentation
  * 
  * Key principles:
  * - Rainfall: 0mm = WHITE (no rain visible on map)
@@ -29,14 +29,14 @@ const legendConfigs: Record<Parameter, LegendConfig> = {
     unit: 'mm',
     ranges: ['< 1', '2-10', '11-20', '21-50', '51-70', '71-100', '101-120', '>121'],
     colors: [
-      '#ffffff', // < 1mm - WHITE (R:255, G:255, B:255)
-      '#d3ff55', // 2-10mm - Light green (R:211, G:255, B:85)
-      '#73ff55', // 11-20mm - Green (R:115, G:255, B:85)
-      '#55dfff', // 21-50mm - Light blue (R:85, G:223, B:255)
-      '#55a9ff', // 51-70mm - Blue (R:85, G:169, B:255)
-      '#ffaa00', // 71-100mm - Orange (R:255, G:170, B:0)
-      '#ff5500', // 101-120mm - Dark orange (R:255, G:85, B:0)
-      '#ff0000', // >121mm - Red (R:255, G:0, B:0)
+      'rgb(255, 255, 255)', // < 1mm - WHITE
+      'rgb(211, 255, 190)',  // 2-10mm - Light green
+      'rgb(85, 255, 0)',     // 11-20mm - Green
+      'rgb(115, 223, 255)',  // 21-50mm - Light blue
+      'rgb(0, 170, 223)',    // 51-70mm - Blue
+      'rgb(255, 170, 0)',    // 71-100mm - Orange
+      'rgb(255, 0, 0)',      // 101-120mm - Red
+      'rgb(255, 0, 230)',    // >121mm - Magenta
     ],
   },
 
@@ -45,12 +45,12 @@ const legendConfigs: Record<Parameter, LegendConfig> = {
     unit: '°C',
     ranges: ['0-15', '16-20', '21-25', '26-30', '31-35', '>36'],
     colors: [
-      '#70a800', // 0-15°C - Green (R:112, G:168, B:0)
-      '#98e600', // 16-20°C - Light green (R:152, G:230, B:0)
-      '#e6e600', // 21-25°C - Yellow (R:230, G:230, B:0)
-      '#ffaa00', // 26-30°C - Orange (R:255, G:170, B:0)
-      '#ff5a00', // 31-35°C - Dark orange (R:255, G:90, B:0)
-      '#c00000', // >36°C - Red (R:192, G:0, B:0)
+      'rgb(0, 230, 0)',      // 0-15°C - Green
+      'rgb(152, 230, 0)',    // 16-20°C - Light green
+      'rgb(230, 230, 0)',    // 21-25°C - Yellow
+      'rgb(255, 170, 0)',    // 26-30°C - Orange
+      'rgb(255, 90, 0)',     // 31-35°C - Dark orange
+      'rgb(192, 0, 0)',      // >36°C - Red
     ],
   },
 
@@ -59,12 +59,12 @@ const legendConfigs: Record<Parameter, LegendConfig> = {
     unit: '°C',
     ranges: ['<5', '6-10', '11-15', '16-20', '21-25', '>26'],
     colors: [
-      '#00006b', // <5°C - Dark blue (R:0, G:0, B:107)
-      '#0030ff', // 6-10°C - Blue (R:0, G:48, B:255)
-      '#00a8a8', // 11-15°C - Cyan (R:0, G:168, B:168)
-      '#70a800', // 16-20°C - Green (R:112, G:168, B:0)
-      '#98e600', // 21-25°C - Light green (R:152, G:230, B:0)
-      '#e6e600', // >26°C - Yellow (R:230, G:230, B:0)
+      'rgb(0, 0, 107)',      // <5°C - Dark blue
+      'rgb(0, 48, 255)',     // 6-10°C - Blue
+      'rgb(0, 168, 168)',    // 11-15°C - Cyan
+      'rgb(112, 168, 0)',    // 16-20°C - Green
+      'rgb(152, 230, 0)',    // 21-25°C - Light green
+      'rgb(230, 230, 0)',    // >26°C - Yellow
     ],
   },
 
@@ -101,84 +101,87 @@ export function MapLegend({ parameter, isOpen, onToggle }: MapLegendProps) {
   if (!config) return null;
 
   return (
-    <div className="absolute bottom-6 right-6 z-30">
-      {/* Toggle Button */}
+    // CHANGE: Positioned at bottom-3 right-3 for tighter spacing
+    <div className="absolute bottom-3 right-3 z-30">
+      {/* CHANGE: Reduced button padding to px-2.5 py-1, smaller font and icons */}
       <button
         onClick={onToggle}
-        className="w-full bg-gradient-to-r from-slate-800/95 to-slate-900/95 backdrop-blur-md text-white px-4 py-2.5 rounded-t-xl border border-slate-700/50 hover:from-slate-700/95 hover:to-slate-800/95 transition-all shadow-xl flex items-center justify-between gap-3"
+        className="w-full bg-gradient-to-r from-slate-800/95 to-slate-900/95 backdrop-blur-md text-white px-2.5 py-1 rounded-t-md border border-slate-700/50 hover:from-slate-700/95 hover:to-slate-800/95 transition-all shadow-lg flex items-center justify-between gap-1.5"
         aria-label={isOpen ? 'Hide legend' : 'Show legend'}
       >
-        <div className="flex items-center gap-2">
-          <Info className="w-4 h-4 text-blue-400" />
-          <span className="text-sm font-medium">{config.title}</span>
-          <span className="text-xs text-slate-400">({config.unit})</span>
+        <div className="flex items-center gap-1">
+          <Info className="w-2.5 h-2.5 text-blue-400" />
+          <span className="text-[10px] font-medium">{config.title}</span>
+          <span className="text-[9px] text-slate-400">({config.unit})</span>
         </div>
         {isOpen ? (
-          <ChevronDown className="w-4 h-4 text-slate-400" />
+          <ChevronDown className="w-2.5 h-2.5 text-slate-400" />
         ) : (
-          <ChevronUp className="w-4 h-4 text-slate-400" />
+          <ChevronUp className="w-2.5 h-2.5 text-slate-400" />
         )}
       </button>
 
       {/* Legend Content */}
       {isOpen && (
-        <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 backdrop-blur-md border border-slate-700/50 border-t-0 rounded-b-xl shadow-2xl p-4 animate-slideUp">
+        // CHANGE: Reduced padding from p-3 to p-2
+        <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 backdrop-blur-md border border-slate-700/50 border-t-0 rounded-b-md shadow-xl p-2 animate-slideUp">
           {/* Special Note for Rainfall */}
           {parameter === 'rainfall' && (
-            <div className="mb-3 pb-3 border-b border-slate-700/50">
-              <div className="flex items-center gap-2 text-xs text-slate-400">
-                <Info className="w-3 h-3" />
+            // CHANGE: Reduced margins and padding
+            <div className="mb-1.5 pb-1.5 border-b border-slate-700/50">
+              <div className="flex items-center gap-1 text-[9px] text-slate-400">
+                <Info className="w-2 h-2" />
                 <span>White areas = No rain (0 mm)</span>
               </div>
             </div>
           )}
 
-          {/* Color Scale */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2">
+          {/* CHANGE: Reduced gap from gap-1.5 to gap-1, made color boxes smaller */}
+          <div className="flex items-center gap-1 overflow-x-auto pb-1">
             {config.colors.map((color, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center min-w-[56px] flex-shrink-0"
+                className="flex flex-col items-center min-w-[36px] flex-shrink-0"
               >
-                {/* Color Box */}
+                {/* CHANGE: Reduced color box from w-11 h-12 to w-9 h-10 */}
                 <div
-                  className="w-14 h-16 border-2 border-slate-700 shadow-lg rounded-md"
+                  className="w-9 h-10 border-2 border-slate-700 shadow-md rounded"
                   style={{ 
                     backgroundColor: color,
                     // Add subtle border for white rainfall box
-                    ...(color === '#ffffff' && { borderColor: '#cbd5e1' })
+                    ...(color === 'rgb(255, 255, 255)' && { borderColor: '#cbd5e1' })
                   }}
                 />
 
-                {/* Range Label */}
-                <div className="text-xs text-slate-300 mt-1.5 whitespace-nowrap text-center font-medium">
+                {/* CHANGE: Reduced font size and margin */}
+                <div className="text-[9px] text-slate-300 mt-0.5 whitespace-nowrap text-center font-medium">
                   {config.ranges[index]}
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Model Info */}
-          <div className="mt-3 pt-3 border-t border-slate-700/50">
-            <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs">
-              <div className="flex gap-1.5">
+          {/* CHANGE: Reduced margins and font sizes for model info */}
+          <div className="mt-1.5 pt-1.5 border-t border-slate-700/50">
+            <div className="flex flex-wrap gap-x-2 gap-y-0.5 text-[9px]">
+              <div className="flex gap-0.5">
                 <span className="text-slate-400">Model:</span>
                 <span className="text-white font-medium">WRF-ARW v4.5</span>
               </div>
-              <div className="flex gap-1.5">
+              <div className="flex gap-0.5">
                 <span className="text-slate-400">Microphysics:</span>
                 <span className="text-white font-medium">Thompson</span>
               </div>
-              <div className="flex gap-1.5">
+              <div className="flex gap-0.5">
                 <span className="text-slate-400">Radiation:</span>
                 <span className="text-white font-medium">RRTMG</span>
               </div>
             </div>
           </div>
 
-          {/* Standard Reference */}
-          <div className="mt-2 pt-2 border-t border-slate-700/30">
-            <div className="text-[10px] text-slate-500 text-center">
+          {/* CHANGE: Reduced margins for standard reference */}
+          <div className="mt-1 pt-1 border-t border-slate-700/30">
+            <div className="text-[8px] text-slate-500 text-center">
               Official KMD Operational Color Standard
             </div>
           </div>
